@@ -1,3 +1,4 @@
+========================================
 REST-style-mail-server-using-codeigniter
 ========================================
 
@@ -21,9 +22,9 @@ Codeigniter Restclient by Phil Sturgeon
 https://github.com/philsturgeon/codeigniter-restclient
 Used for example, you can use any means of sending a REST put request to send a mail.
 
-
+*********
 PHPMailer
----------
+*********
 http://phpmailer.worxware.com/index.php?pg=phpmailer
 required.
 Install in the third_party folder in a folder named php_mailer
@@ -32,52 +33,67 @@ SQL
 ---
 There is a mysql.sql file with the required table structure.
 
+********
 Database
---------
-**Domains
+********
+
+Domains
+-------
 domain: use the same name from the 'providers' array in the config file (see below).
 More than one entry can use the same domain, when sending mail the server will send to the one with the lowest "mails_sent" count.  This allows for a round robin of multiple providers for a single site.
 
-**username
+username
+--------
 The username for your email account
 
-**password
+password
+--------
 The password for your email account
 
-**host
+host
+----
 The host for your mail, such as smtp.googlemail.com or mail.example.com
 
-**port
+port
+----
 The port to send to, normally 25, or 587 if sending to gmail
 
-**active
+active
+------
 If 1, then this item is active and usable to send mail.
 
-**access_key
+access_key
+----------
 Used to authenticate the sending server.  All servers with the same _domain_ need to have the same key
 
-**smtp_auth
+smtp_auth
+---------
 1 if the mail server requires authentication
 
-**smtp_secure
+smtp_secure
+-----------
 tls or none.  Depends on what your server requires.  This is the PHPMailer SMTPSecure property.  Gmail, for example, requires TLS
 
-**charset
+charset
+-------
 The charset to set the email to.  utf-8 is what I generally use
 
-**mails_sent
+mails_sent
+----------
 How many emails have been sent using this server.  Incremented automatically.  Used to help round_robin multiple servers for the same domain
 
-**provider
+provider
+--------
 Provider as defined in the 'providers' option in the config file.  Used for per hour limits on sending mail
 
-**send_type
+send_type
+---------
 smtp, mail, sendmail
 What route to send the mail.  smtp use a host, sendmail uses local sendmail, and mail uses the PHP mail function.
 
-
+***
 Use
-===
+***
 The mail server looks for a put rest connection to: mailserver.com/api/mail
 
 The tmail controller has an example of how to use Phil Sturgeons REST client to send an email.  The options when puting an email are:
@@ -97,73 +113,90 @@ The tmail controller has an example of how to use Phil Sturgeons REST client to 
 
 	attach)list, send_now, cc, and bcc are optional.
 	
-**domain
+domain
+------
 The domain tag to identify who is sending.
 
-**to_name
+to_name
+-------
 optional
 Regular name of who the email is going to.
 If you don't include this, the to_email is used.
 
-**to_email
+to_email
+--------
 Email address to send to
 
-**subject
+subject
+-------
 The subject of the mail
 
-**body
+body
+----
 The body of the mail.
 For HTML mail, you have to have a fully html compliant body.  (html, head, body, etc).
 File links need to be absolutely defined to be attached internally (i.e. inline images).
 If you link to images externally, i.e. web hosted images, many mail clients will not render them until the receiver agrees to see them.
 
-**from_name
+from_name
+---------
 The name of the sender
 
-**from_mail
+from_mail
+---------
 The email address to put on the message as who it is from, also used for reply-to
 
-**domain_key
+domain_key
+----------
 Used to authenticate and allow sender to send mail.
 You can also use the API key option in the REST server, and you will have to send that as well.
 
-**send_now
+send_now
+--------
 Instead of scheduling mail to go out, send it immediately.  The call takes longer to return when using this option.
 
-**cc and bcc
+cc and bcc
+----------
 Optional
 comma separated lists of emails to CC or BCC the email to.
 
-**attach_list
+attach_list
+-----------
 Optional
 Pipe | separated list of files to attach.  
 If the file contains http, it is grabbed from the web and temporarily stored at the time of mail processing.
 Files in this list need to remain available until after sending, which may not be immediate.
 
-
+**********
 Cron tasks
-----------
+**********
 you will need to configure the following two cron tasks
-**example.com/crons/nightly
+
+example.com/crons/nightly
+-------------------------
 Run once a day, handles expiration of old logs and emails
 
-**example.com/crons
+example.com/crons
+-----------------
 Run as often as you want to check for mail to go out.  I use every 10 minutes.
 
 
 
-
+*************
 Configuration
-=============
-**mserv.php in config directory
+*************
+mserv.php in config directory
+-----------------------------
 
-**$config['providers']
+$config['providers']
+--------------------
 Set your possible providers in the $config['providers'] item as an array.
 The names don't matter, this is used to enforce hourly caps on sending mail.
 example:
 $config['providers'] = array('gmail', 'dreamhost');
 
-**$config['provider_hourly_cap']
+$config['provider_hourly_cap']
+------------------------------
 This allows you to set the maximum number of mails to send in an hour.  This is a sliding window, so it checks the last hour's worth of sent mail.
 
 I recommend setting this to less than the allotted amount if you plan on using the "force send" option to force some emails out immediately.
@@ -172,7 +205,8 @@ example:
 $config['provider_hourly_cap']['providername'] = 99;
 
 
-**$config['max_processing_time']
+$config['max_processing_time']
+------------------------------
 Number of seconds maximum to occupy while processing email.  This check is done after each email is sent, so it might run a short amount over.
 
 Remember that attaching files can expand the time needed to send a mail.
@@ -180,7 +214,8 @@ Remember that attaching files can expand the time needed to send a mail.
 You should set this to be less time than the maximum processing time your PHP install is configured for, so that it stops before your server forces it to.
 
 
-**$config['attach_dir']
+$config['attach_dir']
+----------------------
 The local directory to store temporary attached files.
 The web server needs to be able to access files and directories under this path.
 
@@ -191,22 +226,26 @@ Files that don't have "http" in them are assumed to be local files, and are atta
 example:
 $config['attach_dir']							= FCPATH . 'attach/';
 
-**$config['single_mail_timeout']
+$config['single_mail_timeout']
+----------------------
 The number of seconds to try to deliver a single piece of mail.  You can increase this if you have a slow server you are talking to.
 
-**$config['log_keep_days']
-
+$config['log_keep_days']
+----------------------
 The number of days to keep old logs.
 
-**$config['email_keep_days']
+$config['email_keep_days']
+----------------------
 The number of days to keep old, sent emails.
 
+*****
 NOTES
------
+*****
 
 You can remove the lg model and calls to it, as well as the lgs directory, if you prefer to use a different means to log some of the basic info.  It is a carryover from another project.
 
+*********
 Changelog
----------
+*********
 **Version 1.0.0
 * Initial release
