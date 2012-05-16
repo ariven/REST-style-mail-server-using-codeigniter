@@ -1,4 +1,3 @@
-========================================
 REST-style-mail-server-using-codeigniter
 ========================================
 
@@ -22,9 +21,8 @@ Codeigniter Restclient by Phil Sturgeon
 https://github.com/philsturgeon/codeigniter-restclient
 Used for example, you can use any means of sending a REST put request to send a mail.
 
-*********
 PHPMailer
-*********
+=========
 http://phpmailer.worxware.com/index.php?pg=phpmailer
 required.
 Install in the third_party folder in a folder named php_mailer
@@ -33,9 +31,9 @@ SQL
 ---
 There is a mysql.sql file with the required table structure.
 
-********
+
 Database
-********
+========
 
 Domains
 -------
@@ -91,9 +89,10 @@ send_type
 smtp, mail, sendmail
 What route to send the mail.  smtp use a host, sendmail uses local sendmail, and mail uses the PHP mail function.
 
-***
+
 Use
-***
+===
+
 The mail server looks for a put rest connection to: mailserver.com/api/mail
 
 The tmail controller has an example of how to use Phil Sturgeons REST client to send an email.  The options when puting an email are:
@@ -167,9 +166,9 @@ Pipe | separated list of files to attach.
 If the file contains http, it is grabbed from the web and temporarily stored at the time of mail processing.
 Files in this list need to remain available until after sending, which may not be immediate.
 
-**********
+
 Cron tasks
-**********
+==========
 you will need to configure the following two cron tasks
 
 example.com/crons/nightly
@@ -182,9 +181,10 @@ Run as often as you want to check for mail to go out.  I use every 10 minutes.
 
 
 
-*************
+
 Configuration
-*************
+=============
+
 mserv.php in config directory
 -----------------------------
 
@@ -193,7 +193,7 @@ $config['providers']
 Set your possible providers in the $config['providers'] item as an array.
 The names don't matter, this is used to enforce hourly caps on sending mail.
 example:
-$config['providers'] = array('gmail', 'dreamhost');
+```$config['providers'] = array('gmail', 'dreamhost');```
 
 $config['provider_hourly_cap']
 ------------------------------
@@ -202,7 +202,7 @@ This allows you to set the maximum number of mails to send in an hour.  This is 
 I recommend setting this to less than the allotted amount if you plan on using the "force send" option to force some emails out immediately.
 
 example: 
-$config['provider_hourly_cap']['providername'] = 99;
+```$config['provider_hourly_cap']['providername'] = 99;```
 
 
 $config['max_processing_time']
@@ -224,7 +224,7 @@ If an attached file has "http"  in it, it is assumed to be from the web, and it 
 Files that don't have "http" in them are assumed to be local files, and are attached, and are NOT deleted from the local file system.
 
 example:
-$config['attach_dir']							= FCPATH . 'attach/';
+```$config['attach_dir']							= FCPATH . 'attach/';```
 
 $config['single_mail_timeout']
 ----------------------
@@ -238,14 +238,15 @@ $config['email_keep_days']
 ----------------------
 The number of days to keep old, sent emails.
 
-*****
+
 NOTES
-*****
+=====
 
 You can remove the lg model and calls to it, as well as the lgs directory, if you prefer to use a different means to log some of the basic info.  It is a carryover from another project.
 
-*********
+
 Changelog
-*********
+=========
+
 **Version 1.0.0
 * Initial release
