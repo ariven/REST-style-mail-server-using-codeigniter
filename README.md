@@ -244,6 +244,14 @@ NOTES
 
 You can remove the lg model and calls to it, as well as the lgs directory, if you prefer to use a different means to log some of the basic info.  It is a carryover from another project.
 
+EXAMPLE
+=======
+There is an example Notify library that uses the Rest Client library to show one method to integrate with your websites
+
+For example you can use $this->notify->error('Some Error Message'); to send an immediate error message to the site administrator.
+
+Configuration is by the notify.php config file
+
 
 Changelog
 =========
