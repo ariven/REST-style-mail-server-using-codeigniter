@@ -40,7 +40,7 @@
 
 			$data['to_email'] = trim($this->put('to_email')) != '' ? $this->put('to_email') : '';
 			$data['subject']     = $this->put('subject');
-			$data['body']        = $this->put('body');
+			$data['body']        = html_entity_decode($this->put('body'));
 			$data['bcc']         = $this->put('bcc');
 			$data['cc']          = $this->put('cc');
 			$data['attach_list'] = $this->put('attach_list');
